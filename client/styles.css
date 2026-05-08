@@ -290,7 +290,8 @@ body {
 /* ── Video Container ────────────────────────────────────────── */
 .video-container {
     position: relative; border-radius: var(--radius-lg); overflow: hidden;
-    background: rgba(57, 57, 57, 0.3); aspect-ratio: 4/3; margin-bottom: 16px;
+    background: rgba(57, 57, 57, 0.3); aspect-ratio: 16/9;
+    margin-bottom: 16px; width: 100%;
     border: 1px solid var(--glass-border);
 }
 /* Corner brackets */
