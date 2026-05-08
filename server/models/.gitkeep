@@ -1,0 +1,5 @@
+# Place the pretrained model weights file here:
+# inception_resnet_v1_vggface2.pth
+#
+# Download from the Real-Time-Face-Recognition-using-Embeddings repo
+# or generate using the Colab notebook.

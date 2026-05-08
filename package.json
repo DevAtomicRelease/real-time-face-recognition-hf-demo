@@ -1,0 +1,19 @@
+{
+  "name": "face-recognition-web",
+  "version": "1.0.0",
+  "description": "Browser-based real-time face recognition system using FaceNet embeddings",
+  "main": "client/index.html",
+  "scripts": {
+    "start": "cd server && uvicorn app:app --host 0.0.0.0 --port 8000"
+  },
+  "keywords": [
+    "face-recognition",
+    "facenet",
+    "mtcnn",
+    "embeddings",
+    "real-time",
+    "websocket"
+  ],
+  "author": "",
+  "license": "MIT"
+}

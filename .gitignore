@@ -1,0 +1,45 @@
+# ── Virtual Environment ──────────────────────────────────
+.venv/
+venv/
+env/
+.env/
+
+# ── Python ───────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Model Weights (downloaded at runtime on HF) ─────────
+server/models/*.pth
+server/models/*.pt
+
+# ── Session Temp Data ────────────────────────────────────
+tmp/
+
+# ── Node / Package Manager ───────────────────────────────
+node_modules/
+package-lock.json
+
+# ── IDE / Editor ─────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS Files ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ─────────────────────────────────────────────────
+*.log
+
+# ── Environment Variables ────────────────────────────────
+.env
+.env.local

@@ -1,0 +1,10 @@
+# HF Spaces requirements (torch installed separately in Dockerfile)
+facenet-pytorch>=2.5.2
+opencv-python-headless>=4.5.0
+fastapi>=0.68.0
+uvicorn[standard]>=0.15.0
+python-multipart>=0.0.5
+websockets>=10.0
+numpy>=1.21.0
+scikit-learn>=0.24.0
+Pillow>=8.0

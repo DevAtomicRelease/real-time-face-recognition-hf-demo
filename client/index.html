@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Real-time face recognition web app using FaceNet embeddings.">
+    <title>FaceAuth | Real-Time Identity Matching</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="bg-grid"></div>
+
+    <div id="app" class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 32 32" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="2"/><rect x="18" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="2"/><rect x="2" y="18" width="12" height="12" rx="3" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="24" r="5" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="24" r="2" fill="currentColor"/></svg>
+                </div>
+                <h1>FaceAuth<span class="accent">.</span></h1>
+            </div>
+            <div class="session-info" id="sessionInfo">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="sessionStatus">Initializing...</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="steps-bar">
+                <div class="step active" id="step1"><div class="step-number">1</div><span>Register</span></div>
+                <div class="step-line" id="stepLine1"></div>
+                <div class="step" id="step2"><div class="step-number">2</div><span>Recognize</span></div>
+            </div>
+
+            <!-- Registration Panel -->
+            <section class="panel registration-panel" id="registrationPanel">
+                <div class="panel-header">
+                    <h2>Face Registration</h2>
+                    <p class="panel-subtitle">Record a short video or upload face images to register your identity</p>
+                </div>
+                <div class="name-input-group">
+                    <label for="nameInput">Your Name</label>
+                    <input type="text" id="nameInput" placeholder="Enter your name..." autocomplete="off">
+                </div>
+                <div class="tab-switcher">
+                    <button class="tab active" id="tabRecord" data-tab="record">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
+                        Record Video
+                    </button>
+                    <button class="tab" id="tabUpload" data-tab="upload">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        Upload Images
+                    </button>
+                </div>
+
+                <div class="tab-content active" id="recordContent">
+                    <div class="video-container">
+                        <video id="recordVideo" autoplay muted playsinline></video>
+                        <div class="video-overlay" id="recordOverlay"><div class="scan-line"></div></div>
+                        <div class="recording-indicator" id="recordingIndicator"><div class="rec-dot"></div><span>REC</span><span id="recordTimer">0:00</span></div>
+                    </div>
+                    <div class="record-controls">
+                        <button class="btn btn-primary btn-record" id="btnRecord"><div class="btn-record-inner"></div>Start Recording</button>
+                        <p class="hint">Record 5-10 seconds of your face looking at the camera</p>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="uploadContent">
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="upload-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+                        <p>Drag & drop face images here</p>
+                        <span class="upload-hint">or click to browse (3-10 images, JPG/PNG)</span>
+                        <input type="file" id="fileInput" multiple accept="image/*" hidden>
+                    </div>
+                    <div class="preview-gallery" id="previewGallery"></div>
+                    <button class="btn btn-primary" id="btnUpload" disabled>Upload & Register</button>
+                </div>
+
+                <div class="processing-state" id="processingState">
+                    <div class="spinner"></div>
+                    <p id="processingText">Processing faces...</p>
+                </div>
+
+                <div class="result-state" id="resultState">
+                    <div class="result-icon success" id="resultIcon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <p id="resultText">Registration successful!</p>
+                    <p class="result-detail" id="resultDetail"></p>
+                    <button class="btn btn-primary" id="btnStartRecognition">Start Recognition →</button>
+                </div>
+            </section>
+
+            <!-- Recognition Panel -->
+            <section class="panel recognition-panel hidden" id="recognitionPanel">
+                <div class="panel-header">
+                    <h2>Real-Time Recognition</h2>
+                    <p class="panel-subtitle">Live face detection and identity matching</p>
+                </div>
+                <div class="recognition-container">
+                    <div class="video-container recognition-video">
+                        <video id="recognitionVideo" autoplay muted playsinline></video>
+                        <canvas id="recognitionCanvas"></canvas>
+                        <div class="fps-counter" id="fpsCounter">0 FPS</div>
+                    </div>
+                    <div class="recognition-sidebar">
+                        <div class="sidebar-card">
+                            <h3>Detection Log</h3>
+                            <div class="detection-log" id="detectionLog"><p class="log-placeholder">Waiting for faces...</p></div>
+                        </div>
+                        <div class="sidebar-card">
+                            <h3>Session Info</h3>
+                            <div class="session-details">
+                                <div class="detail-row"><span>Registered Faces</span><span id="registeredCount">0</span></div>
+                                <div class="detail-row"><span>Threshold</span><span>0.65</span></div>
+                                <div class="detail-row"><span>Model</span><span>FaceNet v1</span></div>
+                            </div>
+                        </div>
+                        <button class="btn btn-danger" id="btnStopRecognition">Stop Recognition</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer"><p>All session data is automatically purged when you leave.</p></footer>
+    </div>
+
+    <script src="/static/recorder.js"></script>
+    <script src="/static/uploader.js"></script>
+    <script src="/static/canvas.js"></script>
+    <script src="/static/recognition.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
