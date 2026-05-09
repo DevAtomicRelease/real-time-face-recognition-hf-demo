@@ -10,7 +10,7 @@
 
 **Browser-based, real-time face recognition using MTCNN detection and InceptionResnetV1 (FaceNet) embeddings.**
 
-[🚀 Live Demo](https://devatomic-face-recognition-with-embeddings.hf.space) · [🤗 HF Space](https://huggingface.co/spaces/devatomic/Face_recognition_with_Embeddings)
+[🚀 Live Demo](https://devatomic-face-recognition-with-embeddings.hf.space)
 
 </div>
 
