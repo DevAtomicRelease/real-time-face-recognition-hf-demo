@@ -164,7 +164,7 @@ Note: The Dockerfile is optimized for CPU-only inference to stay within Hugging 
 | **ML** | PyTorch 2.2, facenet-pytorch (MTCNN + InceptionResnetV1) |
 | **Video** | OpenCV, browser MediaRecorder API |
 | **Frontend** | Vanilla JS, HTML5 Canvas, WebSockets |
-| **Design** | Atomic Sakura — Glassmorphism, Playfair Display, Manrope |
+| **Design** |  Glassmorphism, Playfair Display, Manrope |
 | **Deployment** | Docker, Hugging Face Spaces (free tier) |
 
 ---
